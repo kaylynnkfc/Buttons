@@ -1,23 +1,31 @@
 #!/usr/bin/env python
-
-
 import RPi.GPIO as GPIO
 import time
 from datetime import datetime
 
 GPIO.setmode(GPIO.BCM)
 
-GPIO.setup(23, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-GPIO.setup(24, GPIO.OUT)
+red_button = 23
+blue_button = 25
+led = 24
+
+GPIO.setup(red_button, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.setup(led, GPIO.OUT)
+GPIO.setup(blue_button, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 try:
     while True:
-        button_state = GPIO.input(23)
-        if button_state == False:
-            GPIO.output(24, True)
-            print(datetime.now().strftime("%Y:%m:%d-%H:%M:%S a button was pressed..."))
+        red_button_state = GPIO.input(red_button)
+        blue_button_state = GPIO.input(blue_button)
+        if red_button_state == False:
+            GPIO.output(led, True)
+            print(datetime.now().strftime("%Y:%m:%d-%H:%M:%S RED was pressed"))
+            time.sleep(0.2)
+        if blue_button_state == False:
+            GPIO.output(led, True)
+            print(datetime.now().strftime("%Y:%m:%d-%H:%M:%S BLUE was pressed"))
             time.sleep(0.2)
         else:
-            GPIO.output(24, False)
+            GPIO.output(led, False)
 except:
     GPIO.cleanup()
